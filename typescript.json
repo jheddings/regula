@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Dependency policy for TypeScript projects.",
+  "packageRules": [
+    {
+      "description": "Group typescript with typescript-eslint so the peer range widening lands in the same PR as the major",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["typescript", "typescript-eslint", "@typescript-eslint/**"],
+      "groupName": "typescript"
+    }
+  ]
+}
