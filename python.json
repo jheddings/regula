@@ -8,6 +8,12 @@
       "matchPackageNames": ["black", "flake8", "isort", "pre-commit", "pytest", "ruff"],
       "addLabels": ["dep:ci"],
       "automerge": true
+    },
+    {
+      "description": "Python runtime moves are made deliberately, not proposed by Renovate",
+      "matchDepNames": ["python"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
     }
   ]
 }
