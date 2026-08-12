@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Dependency policy for Python projects.",
+  "packageRules": [
+    {
+      "description": "Python dev tooling is CI-only; label and automerge",
+      "matchCategories": ["python"],
+      "matchPackageNames": ["black", "flake8", "isort", "pre-commit", "pytest", "ruff"],
+      "addLabels": ["dep:ci"],
+      "automerge": true
+    }
+  ]
+}
