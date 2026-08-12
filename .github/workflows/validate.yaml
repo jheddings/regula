@@ -1,0 +1,21 @@
+# Validate the Renovate presets in this repository
+---
+name: Validate Presets
+
+"on":
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate_presets:
+    name: Validate Renovate presets
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.2.0
+        with:
+          node-version: "lts/*"
+      - run: npx --yes --package renovate@latest -- renovate-config-validator --strict *.json
