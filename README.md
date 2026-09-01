@@ -38,6 +38,14 @@ holdback in `python` depends on this.
 | `golang` | Go modules | Groups `golang.org/x/**` |
 | `python` | Python projects | Labels and automerges dev tooling |
 
+**`default`** also pins `semanticCommits` to `enabled` rather than leaving it
+at `auto`. Renovate auto-detects the convention by scoring the last 20
+non-merge commits — plus one for each that parses as `type(scope): subject`,
+minus one for each that does not — and enables semantic titles only when the
+score is positive. A repository whose history is mostly generated commits
+therefore scores negative and gets unprefixed Renovate titles, even though the
+convention here is Conventional Commits everywhere. Pinning it skips the vote.
+
 **`default`** is the policy that used to live only in the self-hosted bot's
 `config.js`, where the Renovate GitHub App could not see it: the `dep:*`
 ecosystem labels, automerge for CI dependencies and stable-major patches,
