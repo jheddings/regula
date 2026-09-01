@@ -12,6 +12,7 @@ from repositories whose `.github/renovate.json` extends them:
     "enabled": true,
     "dependencyDashboard": false,
     "extends": [
+        "github>jheddings/regula",
         "config:recommended",
         "github>jheddings/regula:typescript"
     ]
@@ -20,14 +21,30 @@ from repositories whose `.github/renovate.json` extends them:
 
 Renovate resolves `github>jheddings/regula:typescript` to `typescript.json` in
 this repository's root. The `.json` extension is never written in the reference.
+A reference with no preset name — `github>jheddings/regula` — resolves to
+`default.json`.
+
+`default` is listed first on purpose. Renovate evaluates `packageRules` in
+order and a later match wins, so the baseline has to sit ahead of the ecosystem
+preset for the ecosystem preset to be able to override it. The Python runtime
+holdback in `python` depends on this.
 
 ## Presets
 
 | Preset | Applies to | What it does |
 | --- | --- | --- |
+| `default` | Every repository | Baseline labels, automerge policy, and range strategy |
 | `typescript` | npm projects | Groups `typescript` with the typescript-eslint family |
 | `golang` | Go modules | Groups `golang.org/x/**` |
 | `python` | Python projects | Labels and automerges dev tooling |
+
+**`default`** is the policy that used to live only in the self-hosted bot's
+`config.js`, where the Renovate GitHub App could not see it: the `dep:*`
+ecosystem labels, automerge for CI dependencies and stable-major patches,
+`rangeStrategy: "bump"`, and `lockFileMaintenance`. Moving it here lets either
+bot apply the same policy. Credentials cannot follow — `hostRules` stays in the
+self-hosted config, and the App needs the equivalent registry secrets set in its
+own dashboard.
 
 **`typescript`** exists to fix a recurring stall. `@typescript-eslint/*` declares
 a `peerDependencies` range on `typescript`, so a new TypeScript major cannot
