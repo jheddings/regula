@@ -1,0 +1,78 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Baseline dependency policy shared by every managed repository.",
+  "timezone": "America/Denver",
+  "schedule": ["at any time"],
+  "rangeStrategy": "bump",
+  "automergeType": "pr",
+  "labels": ["dependencies", "renovate"],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "gitIgnoredAuthors": ["renovate@whitesourcesoftware.com"],
+  "packageRules": [
+    {
+      "description": "Label updates by ecosystem so PR listings can be filtered",
+      "matchCategories": ["docker"],
+      "addLabels": ["dep:docker"]
+    },
+    {
+      "matchCategories": ["golang"],
+      "addLabels": ["dep:golang"]
+    },
+    {
+      "matchCategories": ["java"],
+      "addLabels": ["dep:java"]
+    },
+    {
+      "matchCategories": ["js"],
+      "addLabels": ["dep:js"]
+    },
+    {
+      "matchCategories": ["kubernetes"],
+      "addLabels": ["dep:k8s"]
+    },
+    {
+      "matchCategories": ["python"],
+      "addLabels": ["dep:python"]
+    },
+    {
+      "matchCategories": ["rust"],
+      "addLabels": ["dep:rust"]
+    },
+    {
+      "matchCategories": ["node"],
+      "addLabels": ["dep:nodejs"]
+    },
+    {
+      "description": "CI dependencies carry no runtime risk; label and automerge",
+      "matchCategories": ["ci"],
+      "addLabels": ["dep:ci"],
+      "automerge": true
+    },
+    {
+      "description": "pre-commit is CI tooling, but is not in the ci category",
+      "matchManagers": ["pre-commit"],
+      "addLabels": ["dep:ci"],
+      "automerge": true
+    },
+    {
+      "description": "Python dev tooling is CI-only; label and automerge",
+      "matchCategories": ["python"],
+      "matchPackageNames": ["black", "flake8", "isort", "pre-commit", "pytest", "ruff"],
+      "addLabels": ["dep:ci"],
+      "automerge": true
+    },
+    {
+      "description": "Patches on a stable major are automerged; 0.x majors are not stable",
+      "matchUpdateTypes": ["patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "description": "Lock file refreshes change no declared version",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "automerge": true
+    }
+  ]
+}
