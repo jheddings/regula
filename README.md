@@ -35,7 +35,7 @@ holdback in `python` depends on this.
 | --- | --- | --- |
 | `default` | Every repository | Baseline labels, automerge policy, and range strategy |
 | `typescript` | npm projects | Groups `typescript` with the typescript-eslint family |
-| `golang` | Go modules | Groups `golang.org/x/**` |
+| `golang` | Go modules | Groups `golang.org/x/**`; rewrites import paths on major updates |
 | `python` | Python projects | Labels and automerges dev tooling |
 
 **`default`** also pins `semanticCommits` to `enabled` rather than leaving it
@@ -62,6 +62,14 @@ for 36 days. Grouping the packages means the enabling typescript-eslint release
 lands in the same PR as the major, so the upgrade resolves atomically.
 
 **`golang`** groups `golang.org/x/**`, which release in lockstep.
+
+**`golang`** also enables `gomodUpdateImportPaths`. Without it, a major update
+to a module with a `/vN` path suffix only adds the new module to `go.mod`
+beside the old one and leaves every import where it was. The code still builds
+against the old major, CI passes, and the PR changes nothing until someone
+migrates the imports by hand. With the option on, Renovate rewrites the imports
+and tidies `go.mod`, so the PR builds against the new major and a breaking API
+change fails CI where it belongs.
 
 **`python`** labels dev tooling as `dep:ci` and automerges it.
 
